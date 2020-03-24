@@ -13,7 +13,7 @@ defmodule RtsWeb.PageController do
   end
 
 
-  defp ensure_valid_name(conn, params) do
+  defp ensure_valid_name(conn, _params) do
     if String.match?(conn.params["name"] || "", ~r/^[[:alnum:]]{3,8}$/) do
       conn
     else

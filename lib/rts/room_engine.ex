@@ -62,11 +62,16 @@ defmodule Rts.RoomEngine do
 
 
   def handle_call({:move_to, unit_id, [toX, toY], now}, _from, {units, metadatas}) do
-    timer = Process.send_after(self(), {:step, unit_id, now}, @step_duration)
-    unit = Map.put(units[unit_id], :destination, [toX, toY])
-    metadata = Map.put(metadatas[unit_id], :step_timer, timer)
+    if units[unit_id].location != [toX, toY] do
+      if metadatas[unit_id].step_timer do Process.cancel_timer(metadatas[unit_id].step_timer) end
+      timer = Process.send_after(self(), {:step, unit_id, now}, @step_duration)
+      unit = Map.put(units[unit_id], :destination, [toX, toY])
+      metadata = Map.put(metadatas[unit_id], :step_timer, timer)
 
-    {:reply, :ok, {Map.put(units, unit_id, unit), Map.put(metadatas, unit_id, metadata)}}
+      {:reply, :ok, {Map.put(units, unit_id, unit), Map.put(metadatas, unit_id, metadata)}}
+    else
+      {:reply, :ok, {units, metadatas}}
+    end
   end
 
 

@@ -10,7 +10,7 @@ defmodule RtsWeb.RoomChannel do
 
 
   def terminate(_reason, socket) do
-    units = Rts.RoomEngine.remove_unit(Rts.RoomEngine, socket.assigns.player_id)
+    Rts.RoomEngine.remove_unit(Rts.RoomEngine, socket.assigns.player_id)
     RtsWeb.Endpoint.broadcast!("rooms:any", "player_left", %{unit_id: socket.assigns.player_id})
   end
 
