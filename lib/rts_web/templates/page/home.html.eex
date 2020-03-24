@@ -1,0 +1,7 @@
+<form action="/game">
+  <div>
+    Pick a name (2 to 8 alphanumeric characters):
+    <input name="name" />
+    <button>Go!</button>
+  </div>
+</form>
